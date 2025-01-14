@@ -25,13 +25,14 @@ jobs:
               npm ci
 
           
-          - name: Backend
-            run: |
-              ls -all
-              cd backend
-              go test ./...
-          
           - name: Frontend
             run: |
               cd frontend
+              ng build --prod --output-path=frontendDist
               ng test
+
+          - name: Backend
+            run: |
+              cd backend
+              go test ./...
+          
