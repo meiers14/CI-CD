@@ -1,0 +1,28 @@
+name: CI/CD Pipeline
+
+on: 
+    push: 
+        branches: 
+            - main
+    pull_request:
+        branches:
+            - main
+
+jobs:
+    unit-test:
+        runs-on: ubuntu-latest
+
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v4
+          
+          - name: Backend
+            run: |
+              cd backend
+              go test ./... -coverprofile=coverage.out && go tool cover -html=coverage.out -o coverage.html
+          
+          - name: Frontend
+            run: |
+              cd ..
+              cd frontend
+              ng test
