@@ -47,4 +47,6 @@ jobs:
         run: go version
 
       - name: Test Go
-        run: go test ./...
+        run: |
+          cd backend
+          go test ./...
