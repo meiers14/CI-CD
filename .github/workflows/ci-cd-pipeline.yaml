@@ -27,12 +27,11 @@ jobs:
           
           - name: Backend
             run: |
-              cd ..
+              ls -all
               cd backend
-              go test ./... -coverprofile=coverage.out && go tool cover -html=coverage.out -o coverage.html
+              go test ./...
           
           - name: Frontend
             run: |
-              cd ..
               cd frontend
               ng test
