@@ -9,30 +9,51 @@ on:
             - main
 
 jobs:
-    unit-test:
-        runs-on: ubuntu-latest
+  frontend:
+    name: Angular Build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    steps:
+      # {2}
+      - name: Checkout the source code
+        uses: actions/checkout@v3
 
-        steps:
-          - name: Checkout code
-            uses: actions/checkout@v4
+      # {3}
+      - name: Setup Node.js $
+        uses: actions/setup-node@v3
+        with:
+          node-version: $
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
 
-          - name: Install Dependencies
-            run: |
-              sudo apt update
-              sudo apt install golang-go -y
-              sudo apt install nodejs -y
-              cd frontend
-              npm ci
+      # {4}
+      - name: Install dependencies
+        run: npm ci
+      # {5}
+      - name: Run tests
+        run: npm run test:ci
+      # {6}
+      - name: Build
+        run: npm run build
+  
+  backend:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go-version: [ '1.19', '1.20', '1.21.x' ]
 
-          
-          - name: Frontend
-            run: |
-              cd frontend
-              ng build --prod --output-path=frontendDist
-              ng test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Go ${{ matrix.go-version }}
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go-version }}
+      # You can test your matrix by printing the current Go version
+      - name: Display Go version
+        run: go version
 
-          - name: Backend
-            run: |
-              cd backend
-              go test ./...
-          
+      - name: Test Go
+        run: go test ./...
