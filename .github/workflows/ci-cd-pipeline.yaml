@@ -25,7 +25,9 @@ jobs:
       - run: |
           cd frontend
           npm ci
-          ng build --prod --output-path=frontendDist
+          npm run build --if-present
+          cd ..
+          sudo cp -r frontend/dist/frontend/browser backend/cmd/strichliste/frontendDist
 
 
   backend:
