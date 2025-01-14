@@ -25,6 +25,7 @@ jobs:
       - run: |
           cd frontend
           npm ci
+          cd ..
           npx ng build
           cp -r frontend/dist/frontend/browser backend/cmd/strichliste/frontendDist
 
