@@ -18,14 +18,16 @@ jobs:
 
           - name: Install Dependencies
             run: |
-              sudo apt install golang-go
-              sudo apt install nodejs
-              sudo npm install npm@latest -g
-              sudo npm install -g angular/cli
+              sudo apt update
+              sudo apt install golang-go -y
+              sudo apt install nodejs -y
+              cd frontend
+              npm ci
 
           
           - name: Backend
             run: |
+              cd ..
               cd backend
               go test ./... -coverprofile=coverage.out && go tool cover -html=coverage.out -o coverage.html
           
