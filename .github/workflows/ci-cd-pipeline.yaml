@@ -15,6 +15,14 @@ jobs:
         steps:
           - name: Checkout code
             uses: actions/checkout@v4
+
+          - name: Install Dependencies
+            run: |
+              sudo apt install golang-go
+              sudo apt install nodejs
+              sudo npm install npm@latest -g
+              sudo npm install -g angular/cli
+
           
           - name: Backend
             run: |
